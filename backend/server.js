@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
 import connectDb from './config/connectDb.js';
+import cookieParser from 'cookie-parser';
 import { notFound, errorHandler } from './middlewares/error.middleware.js';
 import { PORT, ENV } from './config/secrets.js';
 
@@ -12,6 +13,8 @@ connectDb();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cookieParser());
 
 if (ENV === 'development') {
   app.use(morgan('dev'));
