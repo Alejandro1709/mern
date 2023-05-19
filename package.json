@@ -8,6 +8,7 @@
     "start": "NODE_ENV=production node backend/server.js",
     "dev": "nodemon backend/server.js",
     "client": "npm run dev --prefix client",
+    "both": "concurrently \"npm run dev\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -22,5 +23,8 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.2.0",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1"
   }
 }
