@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/user.routes.js';
 import { notFound, errorHandler } from './middlewares/error.middleware.js';
 import { PORT, ENV } from './config/secrets.js';
 
@@ -11,6 +12,7 @@ if (ENV === 'development') {
 }
 
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/users', userRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello');
