@@ -10,6 +10,9 @@ const app = express();
 
 connectDb();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 if (ENV === 'development') {
   app.use(morgan('dev'));
 }
