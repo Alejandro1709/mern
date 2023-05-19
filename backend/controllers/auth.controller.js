@@ -13,3 +13,10 @@ export const login = asyncHandler(async (req, res) => {
 export const register = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'Hello New User' });
 });
+
+// @desc    Logout User
+// @route   POST /api/v1/auth/logout
+// @access  Public
+export const logout = asyncHandler(async (req, res) => {
+  res.status(200).json({ message: 'Goodbye User' });
+});
