@@ -1,15 +1,17 @@
 import { Route } from 'wouter';
-import Board from './components/Board';
+import HomePage from './pages/HomePage';
 import Layout from './components/Layout';
 import Wrapper from './components/Wrapper';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
 function App() {
   return (
     <Layout>
       <Wrapper>
-        <Route path='/' component={Board} />
-        <Route path='/login'>Login</Route>
-        <Route path='/register'>Register</Route>
+        <Route path='/' component={HomePage} />
+        <Route path='/login' component={LoginPage} />
+        <Route path='/register' component={RegisterPage} />
       </Wrapper>
     </Layout>
   );
