@@ -2,10 +2,13 @@ import express from 'express';
 import morgan from 'morgan';
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
+import connectDb from './config/connectDb.js';
 import { notFound, errorHandler } from './middlewares/error.middleware.js';
 import { PORT, ENV } from './config/secrets.js';
 
 const app = express();
+
+connectDb();
 
 if (ENV === 'development') {
   app.use(morgan('dev'));
