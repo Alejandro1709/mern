@@ -1,18 +1,46 @@
-import { useRef } from 'react';
-import { login } from '../services/auth';
+import { useRef, useEffect } from 'react';
+import { useLocation } from 'wouter';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLoginMutation } from '../slices/authApiSlice';
+import { setCredentials } from '../slices/authSlice';
+import { toast } from 'react-toastify';
 
 function LoginPage() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
+  const [, setLocation] = useLocation();
+  const dispatch = useDispatch();
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (userInfo) {
+      setLocation('/');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userInfo]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (!emailRef.current.value || !passwordRef.current.value) return;
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
 
-    const user = await login(emailRef.current.value, passwordRef.current.value);
+    if (!email || !password) {
+      toast.error('Please provide a valid email and/or password');
+    }
 
-    console.log(user);
+    try {
+      const res = await login({ email, password }).unwrap();
+
+      dispatch(setCredentials({ ...res }));
+      setLocation('/');
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
   };
 
   return (
@@ -20,6 +48,11 @@ function LoginPage() {
       className='flex flex-col gap-2 border p-4 border-slate-400 bg-white'
       onSubmit={handleLogin}
     >
+      {isLoading ? (
+        <span className='bg-blue-400 p-2 text-white rounded-lg'>
+          Loading...
+        </span>
+      ) : null}
       <div className='flex flex-col gap-1.5'>
         <label htmlFor='email'>Email:</label>
         <input
@@ -42,7 +75,10 @@ function LoginPage() {
           ref={passwordRef}
         />
       </div>
-      <button className='bg-slate-600 p-2 mt-2 text-white font-medium cursor-pointer hover:bg-slate-700'>
+      <button
+        disabled={isLoading}
+        className='bg-slate-600 p-2 mt-2 text-white font-medium disabled:bg-slate-200 disabled:cursor-not-allowed cursor-pointer hover:bg-slate-700'
+      >
         Login
       </button>
     </form>
